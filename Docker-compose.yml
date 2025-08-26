@@ -23,15 +23,15 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
-  # client: 
-  #   container_name: myfavfood
-  #   build: . # Build the Docker image from the current directory
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - "1818:1818" # Map port 1818 of the container to port 1818 on the host
-  #   env_file:
-  #     - .env # Load environment variables from the .env file
+  client: 
+    container_name: myfavfood
+    build: . # Build the Docker image from the current directory
+    depends_on:
+      - postgres
+    ports:
+      - "1818:1818" # Map port 1818 of the container to port 1818 on the host
+    env_file:
+      - .env # Load environment variables from the .env file
 
 volumes:
   postgres_data:

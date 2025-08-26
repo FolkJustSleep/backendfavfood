@@ -1,5 +1,26 @@
 basePath: /
 definitions:
+  model.CashControl:
+    properties:
+      bread_in:
+        type: number
+      cash:
+        type: number
+      coin:
+        type: number
+      created_at:
+        type: string
+      id:
+        type: string
+      safe:
+        type: number
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/model.User'
+      user_id:
+        type: string
+    type: object
   model.LoginRequest:
     properties:
       email:
@@ -39,6 +60,182 @@ info:
   title: Fiber API MyFavFood
   version: "1.0"
 paths:
+  /api/cashcontrol/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new cash control
+      parameters:
+      - description: CashControl object
+        in: body
+        name: cash
+        required: true
+        schema:
+          $ref: '#/definitions/model.CashControl'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created cash control
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CashControl'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Create a new cash control
+      tags:
+      - cash
+  /api/cashcontrol/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete cash control information
+      parameters:
+      - description: CashControl ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted cash control
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.CashControl'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Delete cash control
+      tags:
+      - cash
+  /api/cashcontrol/get:
+    get:
+      consumes:
+      - application/json
+      description: Get cash control by id
+      parameters:
+      - description: CashControl ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved cash control
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CashControl'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get cash control by id
+      tags:
+      - cash
+  /api/cashcontrol/getall:
+    get:
+      consumes:
+      - application/json
+      description: Get all cash control
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved cash control
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CashControl'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get all cash control
+      tags:
+      - cash
+  /api/cashcontrol/getbyuserid:
+    get:
+      consumes:
+      - application/json
+      description: Get cash control by user id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved cash control
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CashControl'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get All cash control by user id
+      tags:
+      - cash
+  /api/cashcontrol/update:
+    put:
+      consumes:
+      - application/json
+      description: Update CashControl information
+      parameters:
+      - description: CashControl object
+        in: body
+        name: cashControl
+        required: true
+        schema:
+          $ref: '#/definitions/model.CashControl'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated CashControl
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CashControl'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Update CashControl
+      tags:
+      - cash
   /api/login/login:
     post:
       consumes:

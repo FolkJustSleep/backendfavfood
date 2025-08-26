@@ -8,6 +8,17 @@ import (
 	"go-template/src/middleware"
 )
 
+// Create Cashcontrol Godoc
+// @Summary Create a new cash control
+// @Description Create a new cash control
+// @Tags cash
+// @Accept json
+// @Produce json
+// @Param cash body model.CashControl true "CashControl object"
+// @Success 201 {object} model.Response{data=model.CashControl} "Successfully created cash control"
+// @Failure 400 {object} model.Response "Bad Request"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/cashcontrol/create [post]
 func (h *HTTPGateway) CreateCashControl(ctx *fiber.Ctx) error {
 	Token, err := middleware.DecodeCookie(ctx)
 	if err != nil {
@@ -39,6 +50,16 @@ func (h *HTTPGateway) CreateCashControl(ctx *fiber.Ctx) error {
 	})
 }
 
+// GetCashControlByID goDoc
+// @Summary Get cash control by id
+// @Description Get cash control by id
+// @Tags cash
+// @Accept json
+// @Produce json
+// @Param id query string true "CashControl ID"
+// @Success 200 {object} model.Response{data=model.CashControl} "Successfully retrieved cash control"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/cashcontrol/get [get]
 func (h *HTTPGateway) GetCashControlByID(ctx *fiber.Ctx) error {
 	id := ctx.Query("id")
 	cashControl, err := h.CashControlService.GetCashControlByID(id)
@@ -55,6 +76,15 @@ func (h *HTTPGateway) GetCashControlByID(ctx *fiber.Ctx) error {
 	})
 }
 
+// GetCashControlByID goDoc
+// @Summary Get All cash control by user id
+// @Description Get cash control by user id
+// @Tags cash
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Response{data=model.CashControl} "Successfully retrieved cash control"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/cashcontrol/getbyuserid [get]
 func (h *HTTPGateway) GetCashControlByUserID(ctx *fiber.Ctx) error {
 	Token, err := middleware.DecodeCookie(ctx)
 	if err != nil {
@@ -84,6 +114,15 @@ func (h *HTTPGateway) GetCashControlByUserID(ctx *fiber.Ctx) error {
 	})
 }
 
+// GetCashControlByID goDoc
+// @Summary Get all cash control
+// @Description Get all cash control
+// @Tags cash
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Response{data=model.CashControl} "Successfully retrieved cash control"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/cashcontrol/getall [get]
 func (h *HTTPGateway) GetAllCashControls(ctx *fiber.Ctx) error {
 	cashControls, err := h.CashControlService.GetAllCashControls()
 	if err != nil {
@@ -99,6 +138,16 @@ func (h *HTTPGateway) GetAllCashControls(ctx *fiber.Ctx) error {
 	})
 }
 
+// UpdateCashControl Godoc
+// @Summary Update CashControl
+// @Description Update CashControl information
+// @Tags cash
+// @Accept json
+// @Produce json
+// @Param cashControl body model.CashControl true "CashControl object"
+// @Success 200 {object} model.Response{data=model.CashControl} "Successfully updated CashControl"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/cashcontrol/update [put]
 func (h *HTTPGateway) UpdateCashControl(ctx *fiber.Ctx) error {
 	var cashControl model.CashControl
 	if err := ctx.BodyParser(&cashControl); err != nil {
@@ -121,6 +170,16 @@ func (h *HTTPGateway) UpdateCashControl(ctx *fiber.Ctx) error {
 	})
 }
 
+// DeleteCashControl Godoc
+// @Summary Delete cash control
+// @Description Delete cash control information
+// @Tags cash
+// @Accept json
+// @Produce json
+// @Param id query string true "CashControl ID"
+// @Success 200 {object} model.Response{data=[]model.CashControl} "Successfully deleted cash control"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/cashcontrol/delete [delete]
 func (h *HTTPGateway) DeleteCashControl(ctx *fiber.Ctx) error {
 	id := ctx.Query("id")
 	if err := h.CashControlService.DeleteCashControl(id); err != nil {

@@ -26,6 +26,7 @@ func gatewayCashControl(gateway HTTPGateway, app *fiber.App){
 	api.Get("/getall", gateway.GetAllCashControls)
 	api.Post("/create", gateway.CreateCashControl)
 	api.Get("/get", gateway.GetCashControlByID)
+	api.Get("/getbyuserid", gateway.GetCashControlByUserID)
 	api.Put("/update", middleware.CheckRole, gateway.UpdateCashControl)
 	api.Delete("/delete", middleware.CheckRole, gateway.DeleteCashControl)
 }
