@@ -18,5 +18,5 @@ type Timestamp struct {
 	UserID string `json:"user_id"`
 	In     time.Time  `json:"in"`
 	Out    time.Time  `json:"out"`
-	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID"`
+	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID" swaggerignore:"true"`
 }

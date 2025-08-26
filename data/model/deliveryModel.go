@@ -12,5 +12,5 @@ type Delivery struct {
 	Delivered bool      `json:"delivered"`
 	DeliveredAt time.Time `json:"delivered_at"`
 	UserID     string    `json:"user_id"`
-	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID"`
+	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID", swaggerignore:"true"`
 }

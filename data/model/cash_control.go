@@ -7,5 +7,5 @@ type CashControl struct {
 	Coin float64 `json:"coin"`
 	BreadIn float64 `json:"bread_in"`
 	Safe float64 `json:"safe"`
-	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID"`
+	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID", swaggerignore:"true"`
 }

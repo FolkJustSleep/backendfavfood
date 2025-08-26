@@ -54,12 +54,12 @@ func (p *PSQL) ConnectGorm() (*gorm.DB, error) {
 	fiberlog.Info("Successfully connected to database")
 
 	// Migrate the schema
-	db.Migrator().CreateTable(&model.User{}, &model.Logs{})
-	db.Migrator().CreateTable(&model.CashControl{})
-	db.Migrator().CreateTable(&model.Item{})
-	db.Migrator().CreateTable(&model.Delivery{})
-	db.Migrator().CreateTable(&model.Timestamp{})
-	
+	db.AutoMigrate(&model.User{}, &model.Logs{})
+	db.AutoMigrate(&model.CashControl{})
+	db.AutoMigrate(&model.Item{})
+	db.AutoMigrate(&model.Delivery{})
+	db.AutoMigrate(&model.Timestamp{})
+
 	return db, nil
 }
 
