@@ -1,0 +1,37 @@
+services:
+  postgres:
+    container_name: gormpostgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: folkfolk
+      POSTGRES_PASSWORD: folk
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist database data
+    restart: unless-stopped
+
+  pgAdmin:
+    container_name: gormpgadmin
+    image: dpage/pgadmin4:latest
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: folk
+    depends_on:
+      - postgres
+    restart: unless-stopped
+  # client: 
+  #   container_name: myfavfood
+  #   build: . # Build the Docker image from the current directory
+  #   depends_on:
+  #     - postgres
+  #   ports:
+  #     - "1818:1818" # Map port 1818 of the container to port 1818 on the host
+  #   env_file:
+  #     - .env # Load environment variables from the .env file
+
+volumes:
+  postgres_data:

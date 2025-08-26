@@ -1,0 +1,218 @@
+basePath: /
+definitions:
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  model.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: humorous-colt-vital.ngrok-free.app
+info:
+  contact: {}
+  description: This is a api MyFavFood
+  title: Fiber API MyFavFood
+  version: "1.0"
+paths:
+  /api/login/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: Login credentials
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged in
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Login a user
+      tags:
+      - Login
+  /api/user/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created user
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Create a new user
+      tags:
+      - users
+  /api/user/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete users information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted users
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.User'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Delete users
+      tags:
+      - users
+  /api/user/get:
+    get:
+      consumes:
+      - application/json
+      description: Get users information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved users
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.User'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get users
+      tags:
+      - users
+  /api/user/getall:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved all users
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.User'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get all users
+      tags:
+      - users
+  /api/user/update:
+    put:
+      consumes:
+      - application/json
+      description: Update users information
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated users
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.User'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Update users
+      tags:
+      - users
+swagger: "2.0"
