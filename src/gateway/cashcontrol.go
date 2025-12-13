@@ -20,14 +20,15 @@ import (
 // @Failure 500 {object} model.Response "Internal Server Error"
 // @Router /api/cashcontrol/create [post]
 func (h *HTTPGateway) CreateCashControl(ctx *fiber.Ctx) error {
-	Token, err := middleware.DecodeCookie(ctx)
+	_, err := middleware.DecodeCookie(ctx)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(model.Response{
 			Status: 401,
 			Message: " Unauthorized" + err.Error(),
 		})
 	}
-	userID := Token.UserID
+	// userID := Token.UserID
+
 	var cashControlModel model.CashControl
 	if err := ctx.BodyParser(&cashControlModel); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.Response{
@@ -35,7 +36,6 @@ func (h *HTTPGateway) CreateCashControl(ctx *fiber.Ctx) error {
 			Message: " Bad Request" + err.Error(),
 		})
 	}
-	cashControlModel.UserID = userID
 	cashControl, err := h.CashControlService.CreateCashControl(cashControlModel)
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(model.Response{

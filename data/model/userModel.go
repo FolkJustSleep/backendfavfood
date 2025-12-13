@@ -10,7 +10,7 @@ type User struct {
 	Email	string `json:"email" gorm:"unique"`
 	Password	string `json:"password" gorm:"not null"`
 	Role	string `json:"role" gorm:"default:'user'"`
-
+	CashControl []CashControl `json:"cash_controls" gorm:"many2many:cash_control_users;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" swaggerignore:"true"`
 }
 
 type Timestamp struct {
