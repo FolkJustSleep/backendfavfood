@@ -59,6 +59,7 @@ func (p *PSQL) ConnectGorm() (*gorm.DB, error) {
 	db.AutoMigrate(&model.Item{})
 	db.AutoMigrate(&model.Delivery{})
 	db.AutoMigrate(&model.Timestamp{})
+	db.AutoMigrate(&model.Menu{})
 
 	return db, nil
 }

@@ -1,15 +1,15 @@
 package service
 
 import (
-	"time"
+
 	"fmt"
-	"github.com/google/uuid"
+
 
 	"go-template/data/model"
 	"go-template/data/repository"
 
 	fiberlog "github.com/gofiber/fiber/v2/log"
-	"golang.org/x/crypto/bcrypt"
+
 )
 
 type UserService struct {
@@ -18,7 +18,6 @@ type UserService struct {
 }
 
 type IUserService interface {
-	CreateUser(user model.User) (*model.User, error)
 	GetAllUser() (*[]model.User, error)
 	GetUserByID(id string) (*model.User, error)
 	UpdateUser(user model.User) (*model.User, error)
@@ -32,24 +31,7 @@ func NewUserService(userRepository repository.IUserRepository, logsRepository re
 	}
 }
 
-func (sv *UserService) CreateUser(user model.User) (*model.User, error) {
-	hashedpassword , err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		fiberlog.Error("Error hashing password: ", err)
-		return nil, err
-	}
-	user.Password = string(hashedpassword)
-	time := time.Now()
-	user.CreatedAt = time
-	user.ID = uuid.New().String()
-	fiberlog.Info("Creating user with ID: ", user.ID)
-	resp, err := sv.UserRepository.CreateUser(user)
-	if err != nil {
-		fiberlog.Error(err)
-		return nil, err
-	}
-	return resp, nil
-}
+
 
 func (sv *UserService) GetAllUser() (*[]model.User, error) {
 	data, err := sv.UserRepository.GetAllUser()
@@ -102,3 +84,4 @@ func (sv *UserService) DeleteUser(id string) error {
 	}
 	return nil
 }
+

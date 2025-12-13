@@ -9,41 +9,7 @@ import (
 	fiberlog "github.com/gofiber/fiber/v2/log"
 )
 
-// CreateUser Godoc
-// @Summary Create a new user
-// @Description Create a new user
-// @Tags users
-// @Accept json
-// @Produce json
-// @Param user body model.User true "User object"
-// @Success 201 {object} model.Response{data=model.User} "Successfully created user"
-// @Failure 400 {object} model.Response "Bad Request"
-// @Failure 500 {object} model.Response "Internal Server Error"
-// @Router /api/user/create [post]
-func (h *HTTPGateway) CreateUser(c *fiber.Ctx) error {
-	var user model.User
-	if err := c.BodyParser(&user); err != nil {
-		fiberlog.Error("Error parsing request body: ", err)
-		return c.Status(fiber.StatusBadRequest).JSON(model.Response{
-			Status: 400,
-			Message: "Bad Request",
-			Data: nil,
-		})
-	}
-	createdUser, err := h.UserService.CreateUser(user)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(model.Response{
-			Status: 500,
-			Message: err.Error(),
-			Data: nil,
-		})
-	}
-	return c.Status(fiber.StatusCreated).JSON(model.Response{
-		Status: 201,
-		Message: "Successfully created user",
-		Data: createdUser,
-	})
-}
+
 
 // GetAllUser Godoc
 // @Summary Get all users

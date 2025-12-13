@@ -9,7 +9,6 @@ import (
 func gatewayUser(gateway HTTPGateway, app *fiber.App){
 	api := app.Group("/api/user")
 	api.Get("/getall", gateway.GetAllUser)
-	api.Post("/create", gateway.CreateUser)
 	api.Get("/get", gateway.GetUserByID)
 	api.Put("/update", middleware.CheckRole, gateway.UpdateUser)
 	api.Delete("/delete", middleware.CheckRole, gateway.DeleteUser)
@@ -17,8 +16,10 @@ func gatewayUser(gateway HTTPGateway, app *fiber.App){
 }
 
 func gatewayLogin(gateway HTTPGateway, app *fiber.App) {
-	api := app.Group("/api/login")
+	api := app.Group("/api/auth")
+	api.Post("/register", gateway.Register)
 	api.Post("/login", gateway.Login)
+	api.Post("/logout", gateway.Logout)
 }
 
 func gatewayCashControl(gateway HTTPGateway, app *fiber.App){

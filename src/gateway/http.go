@@ -8,13 +8,13 @@ import (
 
 type HTTPGateway struct {//for store the service that you want to use
 	UserService service.IUserService
-	LoginService service.ILoginService
+	AuthService service.IAuthService
 	CashControlService service.ICashControlService
 }
-func HTTPGatewayHandler(app *fiber.App, userService service.IUserService, loginService service.ILoginService, cashControlService service.ICashControlService) {
+func HTTPGatewayHandler(app *fiber.App, userService service.IUserService, authService service.IAuthService, cashControlService service.ICashControlService) {
 	gateway := &HTTPGateway{
 		UserService:     userService,
-		LoginService:    loginService,
+		AuthService:    authService,
 		CashControlService: cashControlService,
 	}
 	app.Get("/", func(c *fiber.Ctx) error {
