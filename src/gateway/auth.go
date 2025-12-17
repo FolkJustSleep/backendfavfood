@@ -13,14 +13,14 @@ import (
 // Login Godoc
 // @Summary Login a user
 // @Description Login a user
-// @Tags Login
+// @Tags Auth
 // @Accept json
 // @Produce json
 // @Param login body model.LoginRequest true "Login credentials"
 // @Success 200 {object} model.Response "Successfully logged in"
 // @Failure 400 {object} model.Response "Bad Request"
 // @Failure 401 {object} model.Response "Unauthorized"
-// @Router /api/login/login [post]
+// @Router /api/auth/login [post]
 func (h *HTTPGateway) Login(ctx *fiber.Ctx) error {
 	var loginData model.LoginRequest
 	if err := ctx.BodyParser(&loginData); err != nil {
@@ -56,7 +56,7 @@ func (h *HTTPGateway) Login(ctx *fiber.Ctx) error {
 // Register Godoc
 // @Summary Register a new user
 // @Description Register a new user
-// @Tags users
+// @Tags Auth
 // @Accept json
 // @Produce json
 // @Param user body model.User true "User object"
@@ -96,6 +96,15 @@ func (h *HTTPGateway) Register(c *fiber.Ctx) error {
 	})
 }
 
+// Logout Godoc
+// @Summary Logout a user
+// @Description Logout a user
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Response "Successfully logged out"
+// @Failure 500 {object} model.Response "Internal Server Error"
+// @Router /api/auth/logout [post]
 func (h *HTTPGateway) Logout(c *fiber.Ctx) error {
 	if c == nil {
 		return fiber.ErrBadRequest

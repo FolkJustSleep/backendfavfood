@@ -31,3 +31,12 @@ func gatewayCashControl(gateway HTTPGateway, app *fiber.App){
 	api.Put("/update", middleware.CheckRole, gateway.UpdateCashControl)
 	api.Delete("/delete", middleware.CheckRole, gateway.DeleteCashControl)
 }
+
+func gatewayMenu(gateway HTTPGateway, app *fiber.App){
+	api := app.Group("/api/menu")
+	api.Get("/getall", gateway.GetAllMenus)
+	api.Post("/create", middleware.CheckRole, gateway.CreateMenu)
+	api.Get("/get", gateway.GetMenuByID)
+	api.Put("/update", middleware.CheckRole, gateway.UpdateMenu)
+	api.Delete("/delete", middleware.CheckRole, gateway.DeleteMenu)
+}

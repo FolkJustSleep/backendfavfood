@@ -41,7 +41,7 @@ func DecodeCookie(ctx *fiber.Ctx) (*Token, error) {
 	*Token.Token = user.Raw
 	*Token.ExpiresAt = int64(claims["exp"].(float64))
 	Token.Role = claims["role"].(string)
-
+	
 	return Token, nil
 }
 
