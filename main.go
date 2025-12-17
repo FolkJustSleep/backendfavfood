@@ -11,11 +11,14 @@ import (
 	"go-template/src/middleware"
 	service "go-template/src/service"
 
+	_ "go-template/docs"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/swagger"
 	"github.com/joho/godotenv"
-	_ "go-template/docs" 
 )
+
 // @title Fiber API MyFavFood
 // @version 1.0
 // @description This is a api MyFavFood
@@ -32,6 +35,15 @@ func main() {
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 	})
+
+	app.Use(cors.New((cors.Config{
+		AllowOrigins: "http://localhost:3000, https://myfavfood-frontend.vercel.app, https://myfavfood-frontend-git-main-kobchokchuawong.vercel.app",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+		AllowCredentials: true,
+	})))
+
+
 	middleware.LoggerMiddleware(app)
 	app.Get("/swagger/*", swagger.HandlerDefault)	
 	postgresConfig := db.NewPSQL()
