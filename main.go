@@ -45,7 +45,8 @@ func main() {
 	sv1 := service.NewUserService(userRepository, logsRepository)
 	authSV := service.NewAuthService(userRepository, logsRepository)
 	cashcontrolSV := service.NewCashControlService(repo.NewCashControlRepository(pg))
-	gateway.HTTPGatewayHandler(app, sv1, authSV, cashcontrolSV)
+	menuSV := service.NewMenuService(repo.NewMenuRepository(pg))
+	gateway.HTTPGatewayHandler(app, sv1, authSV, cashcontrolSV, menuSV)
 
 	port := os.Getenv("PORT")
 	if port == "" {

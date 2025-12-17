@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -100,16 +101,22 @@ func (sv *AuthService) Logout(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	ctx.ClearCookie("token")
-	var log model.Logs
-	log.UserID = Token.UserID
-	log.Action = "User Logout"
-	log.Status = "complete"
-	log.ID = uuid.New().String()
-	_ , err = sv.LogsRepository.CreateLog(log)
-	if err != nil {
-		fiberlog.Error("Error creating log: ", err)
-		return err
+
+	if Token == nil {
+		return fiber.ErrUnauthorized
 	}
+	ctx.ClearCookie("token")
+	cookies := ctx.Cookies("token")
+	fmt.Println("Cookies after clearing:", cookies)
+	// var log model.Logs
+	// log.UserID = Token.UserID
+	// log.Action = "User Logout"
+	// log.Status = "complete"
+	// log.ID = uuid.New().String()
+	// _ , err = sv.LogsRepository.CreateLog(log)
+	// if err != nil {
+	// 	fiberlog.Error("Error creating log: ", err)
+	// 	return err
+	// }
 	return nil
 }

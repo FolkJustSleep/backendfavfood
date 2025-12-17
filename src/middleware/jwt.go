@@ -18,6 +18,7 @@ type Token struct {
 	UserID string `json:"user_id"`
 	Role string `json:"role"`
 	ExpiresAt *int64 `json:"expires_at"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func JWTHeaderMiddleware() fiber.Handler{

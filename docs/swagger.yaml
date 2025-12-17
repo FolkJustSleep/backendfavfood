@@ -8,16 +8,19 @@ definitions:
         type: number
       coin:
         type: number
-      created_at:
-        type: string
-      id:
-        type: string
       safe:
         type: number
-      updated_at:
-        type: string
       user_id:
         type: string
+    type: object
+  model.Item:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
     type: object
   model.LoginRequest:
     properties:
@@ -25,6 +28,19 @@ definitions:
         type: string
       password:
         type: string
+    type: object
+  model.Menu:
+    properties:
+      description:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/model.Item'
+        type: array
+      name:
+        type: string
+      price:
+        type: number
     type: object
   model.Response:
     properties:
@@ -36,19 +52,13 @@ definitions:
     type: object
   model.User:
     properties:
-      created_at:
-        type: string
       email:
-        type: string
-      id:
         type: string
       name:
         type: string
       password:
         type: string
       role:
-        type: string
-      updated_at:
         type: string
     type: object
 host: humorous-colt-vital.ngrok-free.app
@@ -58,6 +68,90 @@ info:
   title: Fiber API MyFavFood
   version: "1.0"
 paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: Login credentials
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged in
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Login a user
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout a user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged out
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Logout a user
+      tags:
+      - Auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created user
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Register a new user
+      tags:
+      - Auth
   /api/cashcontrol/create:
     post:
       consumes:
@@ -234,59 +328,29 @@ paths:
       summary: Update CashControl
       tags:
       - cash
-  /api/login/login:
+  /api/menu/create:
     post:
       consumes:
       - application/json
-      description: Login a user
+      description: Create a new menu
       parameters:
-      - description: Login credentials
+      - description: Menu object
         in: body
-        name: login
+        name: menu
         required: true
         schema:
-          $ref: '#/definitions/model.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully logged in
-          schema:
-            $ref: '#/definitions/model.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.Response'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/model.Response'
-      summary: Login a user
-      tags:
-      - Login
-  /api/user/create:
-    post:
-      consumes:
-      - application/json
-      description: Create a new user
-      parameters:
-      - description: User object
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.User'
+          $ref: '#/definitions/model.Menu'
       produces:
       - application/json
       responses:
         "201":
-          description: Successfully created user
+          description: Successfully created menu
           schema:
             allOf:
             - $ref: '#/definitions/model.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/model.User'
+                  $ref: '#/definitions/model.Menu'
               type: object
         "400":
           description: Bad Request
@@ -296,9 +360,133 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/model.Response'
-      summary: Create a new user
+      summary: Create a new menu
       tags:
-      - users
+      - menu
+  /api/menu/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a menu
+      parameters:
+      - description: Menu ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted menu
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Delete a menu
+      tags:
+      - menu
+  /api/menu/get:
+    get:
+      consumes:
+      - application/json
+      description: Get menu by id
+      parameters:
+      - description: Menu ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved menu
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Menu'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get menu by id
+      tags:
+      - menu
+  /api/menu/getall:
+    get:
+      consumes:
+      - application/json
+      description: Get all menus
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved all menus
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Menu'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Get all menus
+      tags:
+      - menu
+  /api/menu/update:
+    put:
+      consumes:
+      - application/json
+      description: Update a menu
+      parameters:
+      - description: Menu object
+        in: body
+        name: menu
+        required: true
+        schema:
+          $ref: '#/definitions/model.Menu'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated menu
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Menu'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Update a menu
+      tags:
+      - menu
   /api/user/delete:
     delete:
       consumes:
