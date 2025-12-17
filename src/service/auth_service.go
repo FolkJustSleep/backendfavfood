@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -70,7 +69,7 @@ func (sv *AuthService) Login(email string, password string) (string, error) {
 		}
 		return "", err
 	}
-	_ , err = sv.LogsRepository.CreateLog(log)
+	_, err = sv.LogsRepository.CreateLog(log)
 	if err != nil {
 		fiberlog.Error("Error creating log: ", err)
 	}
@@ -97,26 +96,25 @@ func (sv *AuthService) Register(user model.User) (*model.User, error) {
 }
 
 func (sv *AuthService) Logout(ctx *fiber.Ctx) error {
-	Token , err := middleware.DecodeCookie(ctx)
+	Token, err := middleware.DecodeCookie(ctx)
 	if err != nil {
 		return err
 	}
-
-	if Token == nil {
-		return fiber.ErrUnauthorized
+	ctx.Cookie(&fiber.Cookie{
+		Name:     "token",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HTTPOnly: true,
+	})
+	var log model.Logs
+	log.UserID = Token.UserID
+	log.Action = "User Logout"
+	log.Status = "complete"
+	log.ID = uuid.New().String()
+	_ , err = sv.LogsRepository.CreateLog(log)
+	if err != nil {
+		fiberlog.Error("Error creating log: ", err)
+		return err
 	}
-	ctx.ClearCookie("token")
-	cookies := ctx.Cookies("token")
-	fmt.Println("Cookies after clearing:", cookies)
-	// var log model.Logs
-	// log.UserID = Token.UserID
-	// log.Action = "User Logout"
-	// log.Status = "complete"
-	// log.ID = uuid.New().String()
-	// _ , err = sv.LogsRepository.CreateLog(log)
-	// if err != nil {
-	// 	fiberlog.Error("Error creating log: ", err)
-	// 	return err
-	// }
 	return nil
 }
