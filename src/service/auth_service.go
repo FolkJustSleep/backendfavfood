@@ -40,12 +40,7 @@ func (sv *AuthService) Login(email string, password string) (string, error) {
 	user, err := sv.UserRepository.GetUserByEmail(email)
 	if err != nil {
 		fiberlog.Error("Error getting user by email: ", err)
-		log.Status = "failed" + err.Error()
-		log.UserID = ""
-		_, err = sv.LogsRepository.CreateLog(log)
-		if err != nil {
-			fiberlog.Error("Error creating log: ", err)
-		}
+		log.Status = err.Error()
 		return "", err
 	}
 	log.UserID = user.ID

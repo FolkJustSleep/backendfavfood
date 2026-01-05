@@ -11,13 +11,15 @@ type HTTPGateway struct {//for store the service that you want to use
 	AuthService service.IAuthService
 	CashControlService service.ICashControlService
 	MenuService service.IMenuService
+	TimestampService service.ITimestampService
 }
-func HTTPGatewayHandler(app *fiber.App, userService service.IUserService, authService service.IAuthService, cashControlService service.ICashControlService, menuService service.IMenuService) {
+func HTTPGatewayHandler(app *fiber.App, userService service.IUserService, authService service.IAuthService, cashControlService service.ICashControlService, menuService service.IMenuService, timestampService service.ITimestampService) {
 	gateway := &HTTPGateway{
 		UserService:     userService,
 		AuthService:    authService,
 		CashControlService: cashControlService,
 		MenuService: menuService,
+		TimestampService: timestampService,
 	}
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(model.Response{
@@ -30,4 +32,5 @@ func HTTPGatewayHandler(app *fiber.App, userService service.IUserService, authSe
 	gatewayLogin(*gateway, app)//sent service you want to use to route
 	gatewayCashControl(*gateway, app)
 	gatewayMenu(*gateway, app)
+	gatewayTimestamp(*gateway, app)
 }

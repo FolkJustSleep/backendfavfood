@@ -1,8 +1,8 @@
 package model
 
-import( 
-	"time"
-)
+// import( 
+// 	"time"
+// )
 
 type User struct {
 	BaseModel
@@ -13,10 +13,10 @@ type User struct {
 	CashControl []CashControl `json:"cash_controls" gorm:"many2many:cash_control_users;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" swaggerignore:"true"`
 }
 
-type Timestamp struct {
-	BaseModel
-	UserID string `json:"user_id"`
-	In     time.Time  `json:"in"`
-	Out    time.Time  `json:"out"`
-	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID" swaggerignore:"true"`
-}
+// type Timestamp struct {
+// 	BaseModel
+// 	UserID string `json:"user_id"`
+// 	In     time.Time  `json:"in"`
+// 	Out    time.Time  `json:"out"`
+// 	User   User `json:"user" gorm:"constraint:OnDelete:CASCADE;OnUpdate:CASCADE;foreignKey:UserID;references:ID" swaggerignore:"true"`
+// }

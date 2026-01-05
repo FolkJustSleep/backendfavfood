@@ -48,7 +48,7 @@ func (repo *LogsRepository) GetAllLogs() (*[]model.Logs, error) {
 
 func (repo *LogsRepository) GetLogByID(id string) (*model.Logs, error) {
 	var log model.Logs
-	result := repo.db.Where("user_id = ?", id).First(&log)
+	result := repo.db.Where("id = ?", id).First(&log)
 	if result.Error != nil {
 		return nil, result.Error
 	}

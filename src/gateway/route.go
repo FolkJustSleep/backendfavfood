@@ -40,3 +40,10 @@ func gatewayMenu(gateway HTTPGateway, app *fiber.App){
 	api.Put("/update", middleware.CheckRole, gateway.UpdateMenu)
 	api.Delete("/delete", middleware.CheckRole, gateway.DeleteMenu)
 }
+
+func gatewayTimestamp(gateway HTTPGateway, app *fiber.App){
+	api := app.Group("/api/timestamp")
+	api.Post("/checkin", gateway.CheckIn)
+	api.Post("/checkout", gateway.CheckOut)
+	api.Get("/checkedinemployee", gateway.GetCheckedInEmployee)
+}

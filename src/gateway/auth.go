@@ -34,9 +34,9 @@ func (h *HTTPGateway) Login(ctx *fiber.Ctx) error {
 	token, err := h.AuthService.Login(loginData.Email, loginData.Password)
 	if err != nil {
 		fiberlog.Error("Error logging in: ", err)
-		return ctx.Status(fiber.StatusUnauthorized).JSON(model.Response{
-			Status: 401,
-			Message: "Unauthorized",
+		return ctx.Status(fiber.StatusInternalServerError).JSON(model.Response{
+			Status: 500,
+			Message: "Login failed: " + err.Error(),
 			Data: nil,
 		})
 	}
@@ -81,6 +81,14 @@ func (h *HTTPGateway) Register(c *fiber.Ctx) error {
 			Data: nil,
 		})
 	}
+	// if user.Password != user.ConfirmPassword {
+	// 	return c.Status(fiber.StatusBadRequest).JSON(model.Response{
+	// 		Status: 400,
+	// 		Message: "Password and Confirm Password do not match",
+	// 		Data: nil,
+	// 	})
+	// }
+	
 	createdUser, err := h.AuthService.Register(user)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(model.Response{

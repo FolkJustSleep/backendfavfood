@@ -48,7 +48,6 @@ func (repo *UserRepository) GetAllUser() (*[]model.User, error) {
 }
 
 func (repo *UserRepository) GetUserByID(id string) (*model.User, error) {
-	fmt.Println("[DEBUG] repo.GetUserByID called with id:", id)
 	var user model.User
 	result := repo.db.Where("id = ?", id).First(&user)
 	if result.Error != nil {

@@ -54,11 +54,16 @@ func main() {
 
 	userRepository := repo.NewUserRepository(pg)
 	logsRepository := repo.NewLogsRepository(pg)
+	cashcontrolRepository := repo.NewCashControlRepository(pg)
+	menuRepository := repo.NewMenuRepository(pg)
+	timestampRepository := repo.NewTimestampRepository(pg)
+
 	sv1 := service.NewUserService(userRepository, logsRepository)
 	authSV := service.NewAuthService(userRepository, logsRepository)
-	cashcontrolSV := service.NewCashControlService(repo.NewCashControlRepository(pg))
-	menuSV := service.NewMenuService(repo.NewMenuRepository(pg))
-	gateway.HTTPGatewayHandler(app, sv1, authSV, cashcontrolSV, menuSV)
+	cashcontrolSV := service.NewCashControlService(cashcontrolRepository)
+	menuSV := service.NewMenuService(menuRepository)
+	timestampSV := service.NewTimestampService(timestampRepository, userRepository)
+	gateway.HTTPGatewayHandler(app, sv1, authSV, cashcontrolSV, menuSV, timestampSV)
 
 	port := os.Getenv("PORT")
 	if port == "" {
